@@ -33,7 +33,7 @@ Sound Engineer — Interactive Systems Developer
 University of Chile  
 
 Yocelyn Contreras Pacheco  
-Bachelor of Arts in Dance (Dance Education)  
+Bachelor of Arts major in Dance (Dance Education)  
 University of Chile  
 
 YouTube: https://www.youtube.com/@BellySystem
