@@ -1,10 +1,10 @@
-## BellySystem
+# BellySystem
 
 Gesture-driven musical interface for belly dance performance and improvisation.
 
 Embodied interaction · Machine Learning · Real-time Sound Control
 
-# Project Description
+## Project Description
 
 BellySystem is an interactive musical interface and performance system developed as an exploration of embodied interaction, gesture recognition, and real-time sound control through body movement. The project investigates how belly dance movements can be translated into expressive audio responses using embedded sensing technologies and machine learning, expanding individual creative agency through embodied musical interaction.
 
@@ -20,13 +20,13 @@ BellySystem explores low-latency interaction strategies through sensor fusion an
 
 The project combines artistic research, interactive system design, and technical development within the field of new musical interfaces and embodied performance technologies.
 
-# Contact
+## Contact
 
 For any comments, suggestions, or questions, please contact:
 
 b3llysyst3m@gmail.com
 
-# Authors
+## Authors
 
 Daniel Valdés González
 Sound Engineer — Interactive Systems Developer
