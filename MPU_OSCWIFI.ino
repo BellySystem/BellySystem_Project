@@ -102,46 +102,14 @@ void loop() {
   
   sampleCount++;
   
-  // ===== 4. SERIAL PRINT REDUCIDO (solo para debug) =====
-  // Comentar todo este bloque si no usas Serial
-  /*
-  if (loopStartTime - lastPrintTime >= SERIAL_PRINT_INTERVAL) {
-    float realSampleRate = 1000.0 / actualDelta;
-    
-    if (cachedIP.length() == 0 && WiFi.status() == WL_CONNECTED) {
-      cachedIP = WiFi.localIP().toString();
-    }
-    
-    Serial.printf("⚡ #%lu | Rate: %.1fHz | Acc: %.2f %.2f %.2f | Gyr: %.2f %.2f %.2f | Loop: %.1fms\n",
-                  sampleCount,
-                  realSampleRate,
-                  a.acceleration.x, a.acceleration.y, a.acceleration.z,
-                  g.gyro.x, g.gyro.y, g.gyro.z,
-                  avgLoopTime);
-    
-    lastPrintTime = loopStartTime;
-  }
-  */
-  
-  // ===== 5. RECONEXIÓN WiFi NO BLOQUEANTE =====
+  // ===== 4. RECONEXIÓN WiFi NO BLOQUEANTE =====
   if (sampleCount % 250 == 0) {  // Verificar cada 5 segundos
     if (WiFi.status() != WL_CONNECTED) {
       WiFi.reconnect();  // No bloqueante
       cachedIP = "";
     }
   }
-  
-  // ===== 6. ESTADÍSTICAS DE RENDIMIENTO (opcional) =====
-  // Solo si necesitas monitorear performance
-  /*
-  unsigned long loopTime = millis() - loopStartTime;
-  avgLoopTime = avgLoopTime * 0.95 + loopTime * 0.05;
-  if (loopTime > maxLoopTime) maxLoopTime = loopTime;
-  
-  if (loopTime > LOOP_PERIOD_MS * 0.8) {
-    Serial.printf("⚠️  Loop lento: %lums (objetivo: %dms)\n", loopTime, LOOP_PERIOD_MS);
-  }
-  */
+ 
 }
 
 void setupWiFi() {
