@@ -28,12 +28,12 @@ b3llysyst3m@gmail.com
 
 ## Authors
 
-Daniel Valdés González
-Sound Engineer — Interactive Systems Developer
-University of Chile
+Daniel Valdés González  
+Sound Engineer — Interactive Systems Developer  
+University of Chile  
 
-Yocelyn Contreras Pacheco
-Bachelor of Arts in Dance (Dance Education)
-University of Chile
+Yocelyn Contreras Pacheco  
+Bachelor of Arts in Dance (Dance Education)  
+University of Chile  
 
 YouTube: https://www.youtube.com/@BellySystem
