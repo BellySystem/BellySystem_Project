@@ -41,10 +41,10 @@ YouTube: https://www.youtube.com/@BellySystem
 ## Colaborators
 
 PhD Carolina Espinoza
-LAUD - Sound Dept, U de Chile
+LAUD - Sound Dept, Universidad de Chile
 
 PhD Javier Jaimovich
-Sound Dept, U de Chile
+Sound Dept, Universidad de Chile
 
 MSc Aarón Montoya
 Architecture, Art & Design Faculty, Universidad Diego Portales
