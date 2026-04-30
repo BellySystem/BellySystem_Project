@@ -30,10 +30,21 @@ b3llysyst3m@gmail.com
 
 Daniel Valdés González  
 Sound Engineer — Interactive Systems Developer  
-University of Chile  
+Universidad de Chile  
 
 Yocelyn Contreras Pacheco  
 Bachelor of Arts major in Dance Education  
-University of Chile  
+Universidad de Chile   
 
 YouTube: https://www.youtube.com/@BellySystem
+
+## Colaborators
+
+PhD Carolina Espinoza
+LAUD - Sound Dept, U de Chile
+
+PhD Javier Jaimovich
+Sound Dept, U de Chile
+
+MSc Aarón Montoya
+Architecture, Art & Design Faculty, Universidad Diego Portales
