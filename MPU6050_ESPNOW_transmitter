@@ -1,0 +1,118 @@
+/*
+ * ESP32 Emisora
+ * Lee MPU6050 y envía "TEK" por ESP-NOW cuando
+ * el acelerómetro en X supera 7.0 m/s²
+ */
+
+#include <Adafruit_MPU6050.h>
+#include <Adafruit_Sensor.h>
+#include <Wire.h>
+#include <esp_now.h>
+#include <WiFi.h>
+
+// ── MAC del receptor ───────────────────────────────────────────────────
+uint8_t MAC_RECEPTOR[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
+// ── Configuración MPU6050 ──────────────────────────────────────────────
+#define ACCEL_RANGE    MPU6050_RANGE_8_G
+#define GYRO_RANGE     MPU6050_RANGE_1000_DEG
+#define FILTER_BW      MPU6050_BAND_44_HZ
+#define LOOP_PERIOD_MS 20       // 50Hz
+#define UMBRAL_X       7.0f    // m/s²
+
+// ── Estructura mensaje ESP-NOW ─────────────────────────────────────────
+typedef struct {
+  char command[20];
+} ESPNowMessage;
+
+Adafruit_MPU6050 mpu;
+esp_now_peer_info_t peerInfo;
+unsigned long lastSampleTime = 0;
+
+// Cooldown para evitar envíos repetidos mientras X sigue alto
+bool triggerActivo = false;
+
+// ──────────────────────────────────────────────────────────────────────
+void onDataSent(const wifi_tx_info_t* info, esp_now_send_status_t status) {
+  Serial.printf("Envío ESP-NOW: %s\n",
+    status == ESP_NOW_SEND_SUCCESS ? "OK" : "FALLÓ");
+}
+
+void sendCommand(const char* command) {
+  ESPNowMessage msg;
+  memset(msg.command, 0, sizeof(msg.command));
+  strncpy(msg.command, command, sizeof(msg.command) - 1);
+  esp_now_send(MAC_RECEPTOR, (uint8_t*)&msg, sizeof(msg));
+}
+
+// ──────────────────────────────────────────────────────────────────────
+void setup() {
+  Serial.begin(115200);
+
+  // Inicializar I2C y MPU6050
+  Wire.begin(21, 22);
+  Wire.setClock(400000);
+  delay(100);
+
+  if (!mpu.begin(0x68, &Wire)) {
+    Serial.println("ERROR: MPU6050 no detectado.");
+    while (true) delay(10);
+  }
+
+  mpu.setAccelerometerRange(ACCEL_RANGE);
+  mpu.setGyroRange(GYRO_RANGE);
+  mpu.setFilterBandwidth(FILTER_BW);
+  Serial.println("MPU6050 OK");
+
+  // Inicializar WiFi y ESP-NOW
+  WiFi.mode(WIFI_STA);
+
+
+  if (esp_now_init() != ESP_OK) {
+    Serial.println("ERROR: ESP-NOW no pudo inicializarse.");
+    while (true) delay(1000);
+  }
+
+  esp_now_register_send_cb(onDataSent);
+
+  memcpy(peerInfo.peer_addr, MAC_RECEPTOR, 6);
+  peerInfo.channel = 0;
+  peerInfo.encrypt = false;
+
+  if (esp_now_add_peer(&peerInfo) != ESP_OK) {
+    Serial.println("ERROR: No se pudo agregar el peer.");
+    while (true) delay(1000);
+  }
+
+  Serial.println("Emisor listo.");
+  lastSampleTime = millis();
+}
+
+// ──────────────────────────────────────────────────────────────────────
+void loop() {
+  unsigned long ahora = millis();
+
+  // Control de frecuencia de muestreo (50Hz)
+  if (ahora - lastSampleTime < LOOP_PERIOD_MS) return;
+  lastSampleTime = ahora;
+
+  // Leer sensor
+  sensors_event_t a, g, temp;
+  mpu.getEvent(&a, &g, &temp);
+
+  float accelX = a.acceleration.x;
+  Serial.printf("Accel X: %.2f m/s²\n", accelX);
+
+  // Disparar "TEK" solo en el flanco de subida
+  // (cuando supera el umbral por primera vez)
+  if (accelX > UMBRAL_X && !triggerActivo) {
+    triggerActivo = true;
+    Serial.println("► Enviando TEK");
+    sendCommand("TEK");
+  }
+
+  // Resetear cuando vuelve a bajar del umbral
+  if (accelX <= UMBRAL_X && triggerActivo) {
+    triggerActivo = false;
+  }
+}
