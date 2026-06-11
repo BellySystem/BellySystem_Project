@@ -1,5 +1,5 @@
 #!/bin/bash
-cd ~/Desktop/tesis/MPU6050_ML/gesture_classifier
+cd /ubicación/de/la/carpeta/donde/Esta/el/modelo
 source venv/bin/activate
 
 export LC_ALL=en_US.UTF-8
